@@ -5,6 +5,8 @@ use hungergames\Loader;
 use hungergames\obj\HungerGames;
 use pocketmine\scheduler\PluginTask;
 use pocketmine\tile\Chest;
+use pocketmine\entity\Creature;
+
 class GameRunningTask extends PluginTask{
     /** @var Loader */
     private $HGApi;
@@ -53,6 +55,13 @@ class GameRunningTask extends PluginTask{
                 $msg = Msg::getHGMessage("hg.message.win");
                 $msg = str_replace(["%game%", "%player%"], [$this->game->getName(), $p->getName()], $msg);
                 $this->HGApi->getServer()->broadcastMessage(Msg::color($msg));
+            }
+            foreach($this->HGApi->getServer()->getLevels() as $level) {
+                foreach($level->getEntities() as $entity) {
+                    if (!($entity instanceof Creature)){
+                        $entity->close();
+                    }
+                }
             }
             $this->HGApi->getStorage()->removePlayersInGame($this->game);
             $lvl_path = Loader::getInstance()->getServer()->getDataPath()."worlds/";
