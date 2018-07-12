@@ -40,7 +40,7 @@ class MapBackup{
          * @param string $game
          */
         public function asyncWrite($source, $destination, string $game){
-                $this->loader->getScheduler()->scheduleAsyncTask(new AsyncMapBackup($source, $destination, $game));
+                $this->getServer()->getAsyncPool()->submitTask(new AsyncMapBackup($source, $destination, $game));
         }
 
         /**
