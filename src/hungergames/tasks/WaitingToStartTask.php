@@ -5,9 +5,9 @@ use hungergames\lib\utils\Msg;
 use hungergames\Loader;
 use hungergames\obj\HungerGames;
 use pocketmine\block\Block;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
-class WaitingToStartTask extends PluginTask{
+class WaitingToStartTask extends Task{
         /** @var Loader */
         private $HGApi;
         /** @var HungerGames */
@@ -26,7 +26,6 @@ class WaitingToStartTask extends PluginTask{
          *
          */
         public function __construct(Loader $main, HungerGames $game){
-                parent::__construct($main);
                 $this->HGApi = $main;
                 $this->game = $game;
                 $this->seconds = $game->getWaitingSeconds();
@@ -43,7 +42,7 @@ class WaitingToStartTask extends PluginTask{
                 --$this->seconds;
                 if($count == 0){
                         $this->manager->setStatus("open");
-                        $this->HGApi->getServer()->getScheduler()->cancelTask($this->getTaskId());
+                        $this->HGApi->getScheduler()->cancelTask($this->getTaskId());
                         $this->manager->refresh();
                         return;
                 }
@@ -56,9 +55,9 @@ class WaitingToStartTask extends PluginTask{
                         }
                         if($count < $this->game->getMinimumPlayers()){
                                 $this->manager->setStatus("waiting");
-                                $this->HGApi->getServer()->getScheduler()->cancelTask($this->getTaskId());
+                                $this->HGApi->getScheduler()->cancelTask($this->getTaskId());
                                 $task = new WaitingForPlayersTask($this->HGApi, $this->game);
-                                $h = $this->HGApi->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
+                                $h = $this->HGAp->getScheduler()->scheduleRepeatingTask($task, 20);
                                 $task->setHandler($h);
                                 return;
                         }
@@ -66,7 +65,7 @@ class WaitingToStartTask extends PluginTask{
                 }
                 if($this->seconds == 0 and $count >= $this->game->getMinimumPlayers()){
                         $task = new GameRunningTask($this->HGApi, $this->game);
-                        $h = $this->HGApi->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
+                        $h = $this->HGApi->getScheduler()->scheduleRepeatingTask($task, 20);
                         $task->setHandler($h);
                         foreach($this->HGApi->getStorage()->getPlayersInWaitingGame($this->game) as $p){
                                 if($p->getLevel()->getBlock($p->subtract(0, 1))->getId() === Block::GLASS){
@@ -79,7 +78,7 @@ class WaitingToStartTask extends PluginTask{
                                 $this->HGApi->getStorage()->addPlayer($p, $this->game);
                         }
                         $this->HGApi->getStorage()->removePlayersInWaitingGame($this->game);
-                        $this->HGApi->getServer()->getScheduler()->cancelTask($this->getTaskId());
+                        $this->HGApi->getScheduler()->cancelTask($this->getTaskId());
                         $message = str_replace("%game%", $this->game->getName(), Msg::getHGMessage("hg.message.start"));
                         $this->manager->sendGameMessage(Msg::color($message));
                         $this->HGApi->getScriptManager()->callOnGameStart($this->HGApi->getStorage()->getPlayersInGame($this->game), $this->game);
