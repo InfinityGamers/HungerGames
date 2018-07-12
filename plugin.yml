@@ -4,9 +4,13 @@ main: hungergames\Loader
 author: xBeastMode
 description: "The ultimate starvation game for minecraft pocket!"
 api:
-- 3.0.0-ALPHA10
-- 3.0.0-ALPHA11
-- 3.0.0-ALPHA12
+- 3.0.0
+- 3.0.1
+- 3.0.2
+- 3.0.3
+- 3.0.4
+- 3.0.5
+- 3.0.6
 load: STARTUP
 
 permissions:
@@ -34,3 +38,8 @@ permissions:
         default: op
   hg.command.dm:
         default: op
+commands:
+  hg:
+    description: HungerGames main command
+    usage: /hg help
+    aliases: [sg, sw]
