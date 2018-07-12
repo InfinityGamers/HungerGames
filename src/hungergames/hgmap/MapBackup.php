@@ -2,6 +2,8 @@
 namespace hungergames\hgmap;
 use hungergames\Loader;
 use hungergames\tasks\AsyncMapBackup;
+
+use pocketmine\Server;
 class MapBackup{
 
         /** @var Loader */
