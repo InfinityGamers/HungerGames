@@ -77,7 +77,7 @@ class EventListener implements Listener{
                                 $this->HGApi->getGlobalManager()->getGameManager($game)->addWaitingPlayer($p, true);
                                 if($this->HGApi->getGlobalManager()->getGameManager($game)->isWaiting) return;//checks if task started
                                 $t = new WaitingForPlayersTask($this->HGApi, $game);
-                                $h = $this->HGApi->getServer()->getScheduler()->scheduleRepeatingTask($t, 20);
+                                $h = $this->HGApi->getScheduler()->scheduleRepeatingTask($t, 20);
                                 $t->setHandler($h);
                                 $this->HGApi->getGlobalManager()->getGameManager($game)->isWaiting = true;
                         }
