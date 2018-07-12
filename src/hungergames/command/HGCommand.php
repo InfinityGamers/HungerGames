@@ -17,7 +17,6 @@ class HGCommand extends Command implements PluginIdentifiableCommand{
         private $HGApi;
 
         public function __construct(Loader $main){
-                parent::__construct("hg", "HungerGames " . Info::VERSION . " command", exc::_("%%a/hg help"), ["sg", "sw"]);
                 $this->HGApi = $main;
         }
 
@@ -246,7 +245,7 @@ class HGCommand extends Command implements PluginIdentifiableCommand{
                                 $sender->sendMessage(Msg::color("&aJoining game!"));
                                 if($this->HGApi->getGlobalManager()->getGameManager($game)->isWaiting) return false;//checks if task started
                                 $t = new WaitingForPlayersTask($this->HGApi, $game);
-                                $h = $this->HGApi->getServer()->getScheduler()->scheduleRepeatingTask($t, 20);
+                                $h = $this->HGApi->getScheduler()->scheduleRepeatingTask($t, 20);
                                 $t->setHandler($h);
                                 $this->HGApi->getGlobalManager()->getGameManager($game)->isWaiting = true;
                                 return true;
