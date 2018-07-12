@@ -3,16 +3,15 @@ namespace hungergames\tasks;
 use hungergames\lib\utils\Msg;
 use hungergames\Loader;
 use hungergames\obj\HungerGames;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
-class DeathMatchTask extends PluginTask{
+class DeathMatchTask extends Task{
         /** @var Loader */
         private $HGApi;
         /** @var Loader */
         private $game;
 
         public function __construct(Loader $main, HungerGames $game){
-                parent::__construct($main);
                 $this->HGApi = $main;
                 $this->game = $game;
         }
@@ -23,7 +22,7 @@ class DeathMatchTask extends PluginTask{
         public function onRun(int $currentTick){
                 $count = $this->HGApi->getStorage()->getPlayersInGameCount($this->game);
                 if($count < 2){
-                        $this->HGApi->getServer()->getScheduler()->cancelTask($this->getTaskId());
+                        $this->HGApi->getScheduler()->cancelTask($this->getTaskId());
                         $this->HGApi->getGlobalManager()->getGameManager($this->game)->setStatus("reset");
                         foreach($this->HGApi->getStorage()->getPlayersInGame($this->game) as $p){
                                 $p->teleport($this->game->getLobbyPosition());
