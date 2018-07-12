@@ -4,6 +4,8 @@ use hungergames\Loader;
 use hungergames\tasks\AsyncMapBackup;
 
 use pocketmine\Server;
+use pocketmine\Player;
+use pocketmine\plugin\PluginBase;
 class MapBackup{
 
         /** @var Loader */
