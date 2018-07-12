@@ -4,8 +4,8 @@ use hungergames\lib\mgr\GameManager;
 use hungergames\lib\utils\Msg;
 use hungergames\Loader;
 use hungergames\obj\HungerGames;
-use pocketmine\scheduler\PluginTask;
-class WaitingForPlayersTask extends PluginTask{
+use pocketmine\scheduler\Task;
+class WaitingForPlayersTask extends Task{
         /** @var Loader */
         private $HGApi;
         /** @var HungerGames */
@@ -21,7 +21,6 @@ class WaitingForPlayersTask extends PluginTask{
          * 
          */
         public function __construct(Loader $main, HungerGames $game){
-                parent::__construct($main);
                 $this->HGApi = $main;
                 $this->game = $game;
                 $this->manager = $main->getGlobalManager()->getGameManagerByName($game->getName());
@@ -36,7 +35,7 @@ class WaitingForPlayersTask extends PluginTask{
                 $count = $this->HGApi->getStorage()->getAllWaitingPlayersInGameCount($this->game);
                 if($count == 0){
                         $this->manager->setStatus("open");
-                        $this->HGApi->getServer()->getScheduler()->cancelTask($this->getTaskId());
+                        $this->HGApi->getScheduler()->cancelTask($this->getTaskId());
                         $this->manager->refresh();
                         return;
                 }
@@ -49,9 +48,9 @@ class WaitingForPlayersTask extends PluginTask{
                 }
                 if($count >= $this->game->getMinimumPlayers()){
                         $this->manager->setStatus("waiting");
-                        $this->HGApi->getServer()->getScheduler()->cancelTask($this->getTaskId());
+                        $this->HGApi->getScheduler()->cancelTask($this->getTaskId());
                         $task = new WaitingToStartTask($this->HGApi, $this->game);
-                        $h = $this->HGApi->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
+                        $h = $this->HGApi->getScheduler()->scheduleRepeatingTask($task, 20);
                         $task->setHandler($h);
                         return;
                 }
