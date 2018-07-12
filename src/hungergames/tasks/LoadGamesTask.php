@@ -1,10 +1,10 @@
 <?php
 namespace hungergames\tasks;
 use hungergames\Loader;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 
-class LoadGamesTask extends PluginTask{
+class LoadGamesTask extends Task{
         /** @var Loader */
         private $HGApi;
 
@@ -16,7 +16,6 @@ class LoadGamesTask extends PluginTask{
          *
          */
         public function __construct(Loader $main){
-                parent::__construct($main);
                 $this->HGApi = $main;
         }
 
