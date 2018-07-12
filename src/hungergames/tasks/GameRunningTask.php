@@ -4,10 +4,10 @@ use hungergames\lib\mgr\GameManager;
 use hungergames\lib\utils\Msg;
 use hungergames\Loader;
 use hungergames\obj\HungerGames;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 
-class GameRunningTask extends PluginTask{
+class GameRunningTask extends Task{
         /** @var Loader */
         private $HGApi;
         /** @var HungerGames */
@@ -26,7 +26,6 @@ class GameRunningTask extends PluginTask{
          *
          */
         public function __construct(Loader $main, HungerGames $game){
-                parent::__construct($main);
                 $this->HGApi = $main;
                 $this->game = $game;
                 $this->seconds = $game->getGameSeconds();
@@ -48,7 +47,7 @@ class GameRunningTask extends PluginTask{
                         $this->manager->sendGameMessage($msg);
                 }
                 if($count == 0){
-                        $this->HGApi->getServer()->getScheduler()->cancelTask($this->getTaskId());
+                        $this->HGApi->getScheduler()->cancelTask($this->getTaskId());
                         $this->manager->setStatus("reset");
                         $this->manager->refresh();
                         $this->game->resetGameLevelBackup();
@@ -56,7 +55,7 @@ class GameRunningTask extends PluginTask{
                         return;
                 }
                 if($count == 1){
-                        $this->HGApi->getServer()->getScheduler()->cancelTask($this->getTaskId());
+                        $this->HGApi->getScheduler()->cancelTask($this->getTaskId());
                         $this->manager->setStatus("reset");
                         foreach($this->HGApi->getStorage()->getPlayersInGame($this->game) as $p){
                                 $p->teleport($this->game->getLobbyPosition());
@@ -72,7 +71,7 @@ class GameRunningTask extends PluginTask{
                         return;
                 }
                 if($count >= 2 and $this->seconds <= 0){
-                        $this->HGApi->getServer()->getScheduler()->cancelTask($this->getTaskId());
+                        $this->HGApi->getScheduler()->cancelTask($this->getTaskId());
                         $this->manager->setStatus("reset");
                         $this->manager->refresh();
 
@@ -99,7 +98,7 @@ class GameRunningTask extends PluginTask{
                         $this->HGApi->getGlobalManager()->getGameManagerByName($this->game->getName())->sendGameMessage(Msg::color($msg));
                         $this->HGApi->getScriptManager()->callOnDeathMatchStart($this->HGApi->getStorage()->getPlayersInGame($this->game), $this->game);
                         $task = new DeathMatchTask($this->HGApi, $this->game);
-                        $h = $this->HGApi->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
+                        $h = $this->HGApi->getScheduler()->scheduleRepeatingTask($task, 20);
                         $task->setHandler($h);
                         return;
                 }

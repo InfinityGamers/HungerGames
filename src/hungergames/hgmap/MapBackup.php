@@ -2,6 +2,10 @@
 namespace hungergames\hgmap;
 use hungergames\Loader;
 use hungergames\tasks\AsyncMapBackup;
+
+use pocketmine\Server;
+use pocketmine\Player;
+use pocketmine\plugin\PluginBase;
 class MapBackup{
 
         /** @var Loader */
@@ -40,7 +44,7 @@ class MapBackup{
          * @param string $game
          */
         public function asyncWrite($source, $destination, string $game){
-                $this->loader->getServer()->getScheduler()->scheduleAsyncTask(new AsyncMapBackup($source, $destination, $game));
+                $this->loader->getServer()->getAsyncPool()->submitTask(new AsyncMapBackup($source, $destination, $game));
         }
 
         /**
