@@ -4,6 +4,8 @@ use hungergames\Loader;
 use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 
+use pocketmine\Server;
+
 class LoadGamesTask extends Task{
         /** @var Loader */
         private $HGApi;
