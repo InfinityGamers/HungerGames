@@ -42,8 +42,8 @@ class Loader extends PluginBase{
                 $this->scriptManager = new HGAPIScriptManager($this);
                 $this->mapBackup = new MapBackup($this);
                 $this->signManager = new SignManager($this);
-                $this->->getScheduler()->scheduleDelayedTask(new LoadGamesTask($this), 20);
-                $h = $this->->getScheduler()->scheduleDelayedRepeatingTask($t = new RefreshSignsTask($this), 20 * 5, 20);
+                $this->getScheduler()->scheduleDelayedTask(new LoadGamesTask($this), 20);
+                $h = $this->getScheduler()->scheduleDelayedRepeatingTask($t = new RefreshSignsTask($this), 20 * 5, 20);
                 $t->setHandler($h);
                 $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
                 @mkdir($this->dataPath());
