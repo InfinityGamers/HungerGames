@@ -1,8 +1,8 @@
 <?php
 namespace hungergames\tasks;
 use hungergames\Loader;
-use pocketmine\scheduler\PluginTask;
-class RefreshSignsTask extends PluginTask{
+use pocketmine\scheduler\Task;
+class RefreshSignsTask extends Task{
         /** @var Loader */
         private $HGApi;
 
@@ -14,7 +14,6 @@ class RefreshSignsTask extends PluginTask{
          *
          */
         public function __construct(Loader $main){
-                parent::__construct($main);
                 $this->HGApi = $main;
         }
 
