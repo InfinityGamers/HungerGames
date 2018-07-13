@@ -57,7 +57,7 @@ class WaitingToStartTask extends Task{
                                 $this->manager->setStatus("waiting");
                                 $this->HGApi->getScheduler()->cancelTask($this->getTaskId());
                                 $task = new WaitingForPlayersTask($this->HGApi, $this->game);
-                                $h = $this->HGAp->getScheduler()->scheduleRepeatingTask($task, 20);
+                                $h = $this->HGApi->getScheduler()->scheduleRepeatingTask($task, 20);
                                 $task->setHandler($h);
                                 return;
                         }
